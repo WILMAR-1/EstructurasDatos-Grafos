@@ -153,21 +153,67 @@ public class RedSocialService
         Console.ResetColor();
     }
 
-    // TODO [Compañera]: Implementar ImprimirRecorridoDFS
-    // Debe llamar a _red.RecorridoDFS(idInicio) y mostrar el recorrido en consola
-    // con formato: [Persona1] → [Persona2] → [Persona3] ...
-    // Usar colores: Green para nombres, DarkGray para las flechas
+    public void ImprimirRecorridoDFS(int idInicio)
+    {
+        var persona = _red.BuscarPersonaPorId(idInicio);
+        if (persona == null) return;
 
-    // TODO [Compañera]: Implementar ImprimirRecorridoBFS
-    // Debe llamar a _red.RecorridoBFS(idInicio) y mostrar el recorrido en consola
-    // con formato: [Persona1] → [Persona2] → [Persona3] ...
-    // Usar colores: Green para nombres, DarkGray para las flechas
+        var recorrido = _red.RecorridoDFS(idInicio);
+
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"  DFS desde {persona.Nombre}:\n");
+        Console.ResetColor();
+
+        Console.Write("  ");
+        for (int i = 0; i < recorrido.Count; i++)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"[{recorrido[i].Nombre}]");
+            Console.ResetColor();
+            if (i < recorrido.Count - 1)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write(" → ");
+                Console.ResetColor();
+            }
+        }
+        Console.WriteLine();
+    }
+
+    public void ImprimirRecorridoBFS(int idInicio)
+    {
+        var persona = _red.BuscarPersonaPorId(idInicio);
+        if (persona == null) return;
+
+        var recorrido = _red.RecorridoBFS(idInicio);
+
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"  BFS desde {persona.Nombre}:\n");
+        Console.ResetColor();
+
+        Console.Write("  ");
+        for (int i = 0; i < recorrido.Count; i++)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"[{recorrido[i].Nombre}]");
+            Console.ResetColor();
+            if (i < recorrido.Count - 1)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write(" → ");
+                Console.ResetColor();
+            }
+        }
+        Console.WriteLine();
+    }
 
     // TODO [Compañera]: Implementar ImprimirCamino
     // Debe llamar a _red.EncontrarCamino(idOrigen, idDestino) y mostrar el camino
-    // Si no hay camino, mostrar mensaje de error
+    // con formato: [Persona1] → [Persona2] → [Persona3] ...
+    // Si no hay camino, mostrar mensaje de error con ConsoleColor.Red
 
     // TODO [Compañera]: Implementar ImprimirSugerencias
     // Debe llamar a _red.SugerirAmigos(idPersona) y mostrar las sugerencias
-    // con formato: "NombrePersona (X amigos en común)"
+    // con formato: "  • NombrePersona (X amigos en común)"
+    // Usar ConsoleColor.Green para el nombre y DarkGray para los amigos en común
 }

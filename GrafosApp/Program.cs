@@ -443,7 +443,6 @@ class Program
 
     #region RECORRIDOS
 
-    // TODO [Compañera]: Completar el menú de recorridos
     static void MenuRecorridos()
     {
         bool enMenu = true;
@@ -456,8 +455,8 @@ class Program
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("  [1] Recorrido DFS (Búsqueda en Profundidad)");
             Console.WriteLine("  [2] Recorrido BFS (Búsqueda en Anchura)");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("  [3] Encontrar camino entre dos personas");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("  [3] Encontrar camino entre dos personas (TODO)");
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("  [0] Volver al menú principal");
             Console.ResetColor();
@@ -490,38 +489,60 @@ class Program
         }
     }
 
-    // TODO [Compañera]: Implementar EjecutarDFS
-    // 1. Mostrar lista de personas con MostrarListaPersonas()
-    // 2. Pedir nombre de persona inicial con ConsolaUI.LeerCampo
-    // 3. Buscar la persona con _servicio.Red.BuscarPersona
-    // 4. Llamar a _servicio.ImprimirRecorridoDFS(persona.Id)
     static void EjecutarDFS()
     {
         ConsolaUI.LimpiarPantalla();
-        ConsolaUI.MostrarTitulo("RECORRIDO DFS");
+        ConsolaUI.MostrarTitulo("RECORRIDO DFS (BÚSQUEDA EN PROFUNDIDAD)");
+        ConsolaUI.MostrarInfo("(Presiona ESC para cancelar)\n");
 
-        ConsolaUI.MostrarInfo("Funcionalidad pendiente de implementar.");
+        MostrarListaPersonas();
+
+        var nombre = ConsolaUI.LeerCampo("Persona inicial");
+        if (nombre == null) { ConsolaUI.MostrarCancelado(); return; }
+
+        var persona = _servicio.Red.BuscarPersona(nombre);
+        if (persona == null)
+        {
+            ConsolaUI.MostrarError($"Persona '{nombre}' no encontrada.");
+            ConsolaUI.Pausar();
+            return;
+        }
+
+        Console.WriteLine();
+        _servicio.ImprimirRecorridoDFS(persona.Id);
         ConsolaUI.Pausar();
     }
 
-    // TODO [Compañera]: Implementar EjecutarBFS
-    // 1. Mostrar lista de personas con MostrarListaPersonas()
-    // 2. Pedir nombre de persona inicial con ConsolaUI.LeerCampo
-    // 3. Buscar la persona con _servicio.Red.BuscarPersona
-    // 4. Llamar a _servicio.ImprimirRecorridoBFS(persona.Id)
     static void EjecutarBFS()
     {
         ConsolaUI.LimpiarPantalla();
-        ConsolaUI.MostrarTitulo("RECORRIDO BFS");
+        ConsolaUI.MostrarTitulo("RECORRIDO BFS (BÚSQUEDA EN ANCHURA)");
+        ConsolaUI.MostrarInfo("(Presiona ESC para cancelar)\n");
 
-        ConsolaUI.MostrarInfo("Funcionalidad pendiente de implementar.");
+        MostrarListaPersonas();
+
+        var nombre = ConsolaUI.LeerCampo("Persona inicial");
+        if (nombre == null) { ConsolaUI.MostrarCancelado(); return; }
+
+        var persona = _servicio.Red.BuscarPersona(nombre);
+        if (persona == null)
+        {
+            ConsolaUI.MostrarError($"Persona '{nombre}' no encontrada.");
+            ConsolaUI.Pausar();
+            return;
+        }
+
+        Console.WriteLine();
+        _servicio.ImprimirRecorridoBFS(persona.Id);
         ConsolaUI.Pausar();
     }
 
     // TODO [Compañera]: Implementar EncontrarCamino
-    // 1. Mostrar lista de personas
-    // 2. Pedir nombre de persona origen y destino
-    // 3. Llamar a _servicio.ImprimirCamino(origen.Id, destino.Id)
+    // 1. Mostrar lista de personas con MostrarListaPersonas()
+    // 2. Pedir nombre de persona origen con ConsolaUI.LeerCampo("Persona origen")
+    // 3. Pedir nombre de persona destino con ConsolaUI.LeerCampo("Persona destino")
+    // 4. Buscar ambas personas con _servicio.Red.BuscarPersona
+    // 5. Llamar a _servicio.ImprimirCamino(origen.Id, destino.Id)
     static void EncontrarCamino()
     {
         ConsolaUI.LimpiarPantalla();

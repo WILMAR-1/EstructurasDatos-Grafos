@@ -100,42 +100,69 @@ public class RedSocial
         return comunes;
     }
 
-    // TODO [Compañera]: Implementar recorrido DFS (Búsqueda en Profundidad)
-    // Debe recorrer el grafo desde un nodo inicial usando una pila o recursión.
-    // Parámetro: int idInicio - el id de la persona desde donde inicia el recorrido.
-    // Retorna: List<Persona> con el orden de visita.
-    // Algoritmo:
-    //   1. Crear un array de booleanos "visitados" del tamaño de CantidadPersonas
-    //   2. Crear una pila (Stack<int>) y agregar el nodo inicial
-    //   3. Mientras la pila no esté vacía:
-    //      a. Sacar un nodo de la pila
-    //      b. Si no fue visitado, marcarlo como visitado y agregarlo al resultado
-    //      c. Recorrer la fila de la matriz de adyacencia para ese nodo
-    //      d. Por cada vecino no visitado, agregarlo a la pila
-    //   4. Retornar la lista de personas visitadas
+    // Recorrido DFS (Búsqueda en Profundidad) usando una pila
     public List<Persona> RecorridoDFS(int idInicio)
     {
-        // TODO [Compañera]: Implementar aquí
-        return new List<Persona>();
+        var resultado = new List<Persona>();
+
+        if (idInicio < 0 || idInicio >= CantidadPersonas)
+            return resultado;
+
+        bool[] visitados = new bool[CantidadPersonas];
+        var pila = new Stack<int>();
+        pila.Push(idInicio);
+
+        while (pila.Count > 0)
+        {
+            int actual = pila.Pop();
+
+            if (visitados[actual])
+                continue;
+
+            visitados[actual] = true;
+            resultado.Add(Personas[actual]);
+
+            // Recorrer vecinos en orden inverso para que el primero quede arriba de la pila
+            for (int i = CantidadPersonas - 1; i >= 0; i--)
+            {
+                if (MatrizAdyacencia[actual, i] == 1 && !visitados[i])
+                    pila.Push(i);
+            }
+        }
+
+        return resultado;
     }
 
-    // TODO [Compañera]: Implementar recorrido BFS (Búsqueda en Anchura)
-    // Debe recorrer el grafo desde un nodo inicial usando una cola.
-    // Parámetro: int idInicio - el id de la persona desde donde inicia el recorrido.
-    // Retorna: List<Persona> con el orden de visita.
-    // Algoritmo:
-    //   1. Crear un array de booleanos "visitados" del tamaño de CantidadPersonas
-    //   2. Crear una cola (Queue<int>) y agregar el nodo inicial, marcarlo como visitado
-    //   3. Mientras la cola no esté vacía:
-    //      a. Sacar un nodo de la cola
-    //      b. Agregarlo al resultado
-    //      c. Recorrer la fila de la matriz de adyacencia para ese nodo
-    //      d. Por cada vecino no visitado, marcarlo como visitado y agregarlo a la cola
-    //   4. Retornar la lista de personas visitadas
+    // Recorrido BFS (Búsqueda en Anchura) usando una cola
     public List<Persona> RecorridoBFS(int idInicio)
     {
-        // TODO [Compañera]: Implementar aquí
-        return new List<Persona>();
+        var resultado = new List<Persona>();
+
+        if (idInicio < 0 || idInicio >= CantidadPersonas)
+            return resultado;
+
+        bool[] visitados = new bool[CantidadPersonas];
+        var cola = new Queue<int>();
+
+        cola.Enqueue(idInicio);
+        visitados[idInicio] = true;
+
+        while (cola.Count > 0)
+        {
+            int actual = cola.Dequeue();
+            resultado.Add(Personas[actual]);
+
+            for (int i = 0; i < CantidadPersonas; i++)
+            {
+                if (MatrizAdyacencia[actual, i] == 1 && !visitados[i])
+                {
+                    visitados[i] = true;
+                    cola.Enqueue(i);
+                }
+            }
+        }
+
+        return resultado;
     }
 
     // TODO [Compañera]: Implementar detección de camino entre dos personas
